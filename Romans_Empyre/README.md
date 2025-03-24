@@ -28,6 +28,7 @@ if __name__ == "__main__":
 ### Cracking
 Ciphers such as the Caesar cipher are extremely vulnerable to brute force attacks on keys, so they are used to crack them.
 
+For example, in Python, the code would look like this:
 ```python
 import string
 alphabet = string.ascii_letters + string.digits + "{}_-.,/%?$!@#"
@@ -47,6 +48,31 @@ flag = brute_force_decrypt(encrypted)
 for attempt in flag:
     print(f"Key {attempt[0]:2d}: {attempt[1]}")
 ```
+It can also be solved in C++ with the following code:
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+
+string decrypt(string encrypted, string chars, int key) {
+    string decrypted;
+    for (int i = 0; i < encrypted.size(); i++) {
+        int origin_index = (chars.find(encrypted.at(i)) - key + chars.size()) % chars.size();
+        decrypted += chars.at(origin_index);
+    }
+    return decrypted;
+}
+
+int main() {
+    string encrypted = "TEWGEP6a9rlPkltilGXlukWXxAAxkRGViTXihRuikkos";
+    string alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}_-.,/%?$!@#";
+
+    for (int i = 1; i <= alphabets.size(); i++) {
+        string results = decrypt(encrypted, alphabets, i);
+        cout << "Key " << i << ": " << results << endl;
+    }
+}
+```
+We have placed these codes in the same directory, so please refer to them when executing them.
 ```shell
 $ python3 solver.py
 ...
@@ -84,25 +110,54 @@ if __name__ == "__main__":
 
 ### クラッキング
 シーザー暗号のような暗号は鍵のブルートフォース攻撃に極めて脆弱なためそれを利用してクラッキングする。
+
+例えばPythonでは、以下のようなコードになる。
 ```python
 import string
-alphabet = string.ascii_letters + string.digits + "{}_-.,/%?$!@#"
 
-def brute_force_decrypt(encrypted_str):
-    results = []
-    for key in range(1, len(alphabet)):
-        decrypted = []
-        for c in encrypted_str:
-            original_index = (alphabet.index(c) - key) % len(alphabet)
-            decrypted.append(alphabet[original_index])
-        results.append((key, "".join(decrypted)))
-    return results
+def decrypt(encrypted, chars, key):
+    decrypted = []
+    for c in encrypted:
+        origin_index = (chars.index(c) - key) % len(chars)
+        print(origin_index, end=" ")
+        decrypted.append(chars[origin_index])
+    return "".join(decrypted)
 
-encrypted = "TEWGEP6a9rlPkltilGXlukWXxAAxkRGViTXihRuikkos"
-flag = brute_force_decrypt(encrypted)
-for attempt in flag:
-    print(f"Key {attempt[0]:2d}: {attempt[1]}")
+def main():
+    encrypted = "TEWGEP6a9rlPkltilGXlukWXxAAxkRGViTXihRuikkos"
+    alphabets = string.ascii_letters + string.digits + "{}_-.,/%?$!@#"
+    for i in range(1, len(alphabets)):
+        flag = decrypt(encrypted, alphabets, i)
+        print(f"Key {i}: {flag}")
+
+if __name__ == '__main__':
+    main()
 ```
+またC++でも、次のコードで解くことができる。
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+
+string decrypt(string encrypted, string chars, int key) {
+    string decrypted;
+    for (int i = 0; i < encrypted.size(); i++) {
+        int origin_index = (chars.find(encrypted.at(i)) - key + chars.size()) % chars.size();
+        decrypted += chars.at(origin_index);
+    }
+    return decrypted;
+}
+
+int main() {
+    string encrypted = "TEWGEP6a9rlPkltilGXlukWXxAAxkRGViTXihRuikkos";
+    string alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}_-.,/%?$!@#";
+
+    for (int i = 1; i <= alphabets.size(); i++) {
+        string results = decrypt(encrypted, alphabets, i);
+        cout << "Key " << i << ": " << results << endl;
+    }
+}
+```
+これらのコードは同ディレクトリ内に置いているので、実行する際はぜひ参照してほしい。
 ```shell
 $ python3 solver.py
 ...
