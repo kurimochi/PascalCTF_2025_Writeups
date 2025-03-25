@@ -72,7 +72,7 @@ int main() {
     }
 }
 ```
-We have placed these codes in the same directory, so please refer to them when executing them.
+
 ```shell
 $ python3 solver.py
 ...
@@ -157,7 +157,6 @@ int main() {
     }
 }
 ```
-これらのコードは同ディレクトリ内に置いているので、実行する際はぜひ参照してほしい。
 ```shell
 $ python3 solver.py
 ...
